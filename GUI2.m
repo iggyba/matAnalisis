@@ -54,9 +54,16 @@ function GUI2_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for GUI2
 handles.output = hObject;
+
+ 
+ N = imread('white.jpg');
+ axes(handles.axes4);
+ imshow(N);
+
 M = imread('vacio.jpg');
  axes(handles.axes1);
  imshow(M);
+
  
   handles.verd = 0;
 
@@ -158,7 +165,11 @@ xlabel('f (Hz)')
 ylabel('|P1(f)|')
 
 xIndex = find(P1 == max(P1), 1, 'first');
-maxXValue = f(xIndex)
+maxXValue = f(xIndex);
+
+fg = (maxXValue/2) - 1.5;
+
+set(handles.text3, 'String', fg);
 
 
 %plot(w,abs((y(1:256)')))
