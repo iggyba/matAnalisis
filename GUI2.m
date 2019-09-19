@@ -22,7 +22,7 @@ function varargout = GUI2(varargin)
 
 % Edit the above text to modify the response to help GUI2
 
-% Last Modified by GUIDE v2.5 30-Aug-2019 16:07:59
+% Last Modified by GUIDE v2.5 19-Sep-2019 15:40:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -46,13 +46,8 @@ end
 
 % --- Executes just before GUI2 is made visible.
 function GUI2_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to GUI2 (see VARARGIN)
 
-% Choose default command line output for GUI2
+
 handles.output = hObject;
 
  
@@ -65,7 +60,16 @@ M = imread('vacio.jpg');
  imshow(M);
 
  
-  handles.verd = 0;
+  handles.modoManual = true; %Empieza en modo Manual
+  
+      
+    [handles.re, handles.reFs] = audioread('RE4.mp4');
+        
+    [handles.sol, handles.solFs] = audioread('SOL3.mp4');
+        
+    [handles.la, handles.laFs] = audioread('LA4.mp4');
+         
+    [handles.mi,handles.miFs] = audioread('MI5.mp4');
 
 % Update handles structure
 guidata(hObject, handles);
@@ -76,44 +80,99 @@ guidata(hObject, handles);
 
 % --- Outputs from this function are returned to the command line.
 function varargout = GUI2_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Get default command line output from handles structure
 varargout{1} = handles.output;
 
 
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
  I = imread('nota d.jpg');
  axes(handles.axes1);
  imshow(I);
  
+if handles.modoManual
+    
+    sound(handles.re,handles.reFs);
+    
+else
 
+    grabacion = audiorecorder; 
+    Fs = grabacion.SampleRate;
+    disp('Hablá pariente');
+    recordblocking(grabacion, 4);
+    disp('Se acabó la grabación');
+
+    y=  getaudiodata(grabacion);
+    L = 32000;
+    Y =fft(y);
+
+    P2 = abs(Y/L);
+    P1 = P2(1:L/2+1);
+    P1(2:end-1) = 2*P1(2:end-1);
+
+    f = Fs*(0:(L/2))/L;
+    plot(handles.axes4,f,P1);
+end
 
 % --- Executes on button press in pushbutton3.
 function pushbutton3_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
  J = imread('nota g.jpg');
  axes(handles.axes1);
  imshow(J);
+ 
+ if handles.modoManual
+    
+    sound(handles.sol,handles.solFs);
+else
+    grabacion = audiorecorder; 
+    Fs = grabacion.SampleRate;
+    disp('Hablá pariente');
+    recordblocking(grabacion, 4);
+    disp('Se acabó la grabación');
+
+    y=  getaudiodata(grabacion);
+    L = 32000;
+    Y =fft(y);
+
+    P2 = abs(Y/L);
+    P1 = P2(1:L/2+1);
+    P1(2:end-1) = 2*P1(2:end-1);
+
+    f = Fs*(0:(L/2))/L;
+    plot(handles.axes4,f,P1);    
+end
 
 
 % --- Executes on button press in pushbutton4.
 function pushbutton4_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
 K = imread('nota a.jpg');
  axes(handles.axes1);
  imshow(K);
+ 
+ if handles.modoManual
+    
+    sound(handles.la,handles.laFs);
+else
+    grabacion = audiorecorder; 
+    Fs = grabacion.SampleRate;
+    disp('Hablá pariente');
+    recordblocking(grabacion, 4);
+    disp('Se acabó la grabación');
+
+    y=  getaudiodata(grabacion);
+    L = 32000;
+    Y =fft(y);
+
+    P2 = abs(Y/L);
+    P1 = P2(1:L/2+1);
+    P1(2:end-1) = 2*P1(2:end-1);
+
+    f = Fs*(0:(L/2))/L;
+    plot(handles.axes4,f,P1);    
+end
 
 
 % --- Executes on button press in pushbutton5.
@@ -124,67 +183,38 @@ function pushbutton5_Callback(hObject, eventdata, handles)
 L = imread('nota e.jpg');
  axes(handles.axes1);
  imshow(L);
+ 
+  if handles.modoManual
+
+    sound(handles.mi,handles.miFs);
+  else
+    grabacion = audiorecorder; 
+    Fs = grabacion.SampleRate;
+    disp('Hablá pariente');
+    recordblocking(grabacion, 4);
+    disp('Se acabó la grabación');
+
+    y=  getaudiodata(grabacion);
+    L = 32000;
+    Y =fft(y);
+
+    P2 = abs(Y/L);
+    P1 = P2(1:L/2+1);
+    P1(2:end-1) = 2*P1(2:end-1);
+
+    f = Fs*(0:(L/2))/L;
+    plot(handles.axes4,f,P1);    
+  end
 
 
-% --- Executes on button press in pushbutton6.
 function pushbutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a = "Auto ";
-c = "Manual";
 
-guidata(hObject, handles);
+handles.modoManual = ~handles.modoManual;
 
-%--------------------------------
-
-grabacion = audiorecorder; 
-Fs = grabacion.SampleRate;
-disp('Hablá pariente');
-recordblocking(grabacion, 4);
-disp('Se acabó la grabación');
-
-y=  getaudiodata(grabacion);
-%subplot(2,1,1)
-%plot(y);
-
-
-L = 32000;
-Y =fft(y);
-
-P2 = abs(Y/L);
-P1 = P2(1:L/2+1);
-P1(2:end-1) = 2*P1(2:end-1);
-
-f = Fs*(0:(L/2))/L;
-axes(handles.axes2);
-plot(f,P1) 
-xlim([0 750]);
-title('Single-Sided Amplitude Spectrum of X(t)')
-xlabel('f (Hz)')
-ylabel('|P1(f)|')
-
-xIndex = find(P1 == max(P1), 1, 'first');
-maxXValue = f(xIndex);
-
-fg = (maxXValue/2) - 1.5;
-
-set(handles.text3, 'String', fg);
-
-
-%plot(w,abs((y(1:256)')))
-
-%-------------------------------------
-
-if handles.verd == 0
-    handles.pushbutton6.String = a;
-    handles.verd = 1;
+if handles.modoManual
+    handles.pushbutton6.String = "Manual";
     guidata(hObject, handles);
 else 
-    handles.pushbutton6.String = c;
-    handles.verd = 0;
+    handles.pushbutton6.String = "Auto";
     guidata(hObject, handles);
 end
-
-% myString = sprintf('\nThe value is %s', a);
-% set(handles.text1, 'String', myString);
