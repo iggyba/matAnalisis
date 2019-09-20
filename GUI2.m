@@ -51,27 +51,27 @@ function GUI2_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
  
- N = imread('white.jpg');
- axes(handles.axes4);
- imshow(N);
+  N = imread('white.jpg');
+  axes(handles.axes5);
+  imshow(N);
 
-M = imread('vacio.jpg');
- axes(handles.axes1);
- imshow(M);
+  M = imread('vacio.jpg');
+  axes(handles.axes1);
+  imshow(M);
 
- 
   handles.modoManual = true; %Empieza en modo Manual
-  
       
-    [handles.re, handles.reFs] = audioread('RE4.mp4');
+  [handles.re, handles.reFs] = audioread('RE4.mp4');        
+  [handles.sol, handles.solFs] = audioread('SOL3.mp4');        
+  [handles.la, handles.laFs] = audioread('LA4.mp4');
         
-    [handles.sol, handles.solFs] = audioread('SOL3.mp4');
-        
-    [handles.la, handles.laFs] = audioread('LA4.mp4');
-         
-    [handles.mi,handles.miFs] = audioread('MI5.mp4');
+  [handles.mi,handles.miFs] = audioread('MI5.mp4');
+      
+  handles.reFq = 293.7;
+  handles.solFq = 196;
+  handles.laFq = 440;
+  handles.miFq = 659.3;
 
-% Update handles structure
 guidata(hObject, handles);
 
 % UIWAIT makes GUI2 wait for user response (see UIRESUME)
@@ -96,7 +96,11 @@ if handles.modoManual
     sound(handles.re,handles.reFs);
     
 else
-
+    
+    sfreq = num2str(handles.reFq)
+    myString = append(sfreq,' ',"Hz")
+    set(handles.text12, 'String', myString);
+    
     grabacion = audiorecorder; 
     Fs = grabacion.SampleRate;
     disp('Hablá pariente');
@@ -112,7 +116,36 @@ else
     P1(2:end-1) = 2*P1(2:end-1);
 
     f = Fs*(0:(L/2))/L;
-    plot(handles.axes4,f,P1);
+    %plot(handles.axes4,f,P1);
+
+   [b,a]=ellip(5,0.1,40,[200 400]*2/Fs);
+    [H,w]=freqz(b,a,512*20);
+    %plot(handles.axes5,w*Fs/(2*pi),abs(H))
+
+    sf1=filter(b,a,y);
+    yFF=[Fs/length(y):Fs/length(y):floor(Fs/2)];
+    yAF=abs(fft(sf1));
+    yAFF=yAF(1:length(yFF));
+    plot(handles.axes5,yFF,yAFF);
+    
+    xIndex = find(yAFF == max(yAFF), 1, 'first');
+    frequencia = f(xIndex)
+         
+    freqStr = num2str(frequencia);
+    freqS = append(freqStr,' ',"Hz");
+    set(handles.text11, 'String', freqS);
+    
+    diff = abs(frequencia - handles.reFq);
+    
+    if diff < 2
+        set(handles.text10,'String',"Afinada");
+        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+    else
+        set(handles.text10,'String',"Desafinada");
+        
+    end
+
+            
 end
 
 % --- Executes on button press in pushbutton3.
@@ -125,7 +158,13 @@ function pushbutton3_Callback(hObject, eventdata, handles)
  if handles.modoManual
     
     sound(handles.sol,handles.solFs);
-else
+ else
+     
+    sfreq = num2str(handles.solFq)
+    myString = append(sfreq,' ',"Hz")
+    set(handles.text12, 'String', myString);
+    
+     
     grabacion = audiorecorder; 
     Fs = grabacion.SampleRate;
     disp('Hablá pariente');
@@ -141,7 +180,33 @@ else
     P1(2:end-1) = 2*P1(2:end-1);
 
     f = Fs*(0:(L/2))/L;
-    plot(handles.axes4,f,P1);    
+    %plot(handles.axes4,f,P1);    
+    
+    
+   [b,a]=ellip(5,0.1,40,[300 500]*2/Fs);
+    [H,w]=freqz(b,a,512*20);
+    %plot(handles.axes5,w*Fs/(2*pi),abs(H))
+    
+    sf1=filter(b,a,y);
+    yFF=[Fs/length(y):Fs/length(y):floor(Fs/2)];
+    yAF=abs(fft(sf1));
+    yAFF=yAF(1:length(yFF));
+    plot(handles.axes5,yFF,yAFF);
+    
+    xIndex = find(yAFF == max(yAFF), 1, 'first');
+    frequencia = f(xIndex)
+                
+    freqStr = num2str(frequencia);
+    freqS = append(freqStr,' ',"Hz");
+    set(handles.text11, 'String', freqS);
+    
+    if diff < 2
+        set(handles.text10,'String',"Afinada");
+        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+    else
+        set(handles.text10,'String',"Desafinada");
+        
+    end
 end
 
 
@@ -155,7 +220,11 @@ K = imread('nota a.jpg');
  if handles.modoManual
     
     sound(handles.la,handles.laFs);
-else
+ else
+    sfreq = num2str(handles.laFq)
+    myString = append(sfreq,' ',"Hz")
+    set(handles.text12, 'String', myString);
+    
     grabacion = audiorecorder; 
     Fs = grabacion.SampleRate;
     disp('Hablá pariente');
@@ -171,7 +240,36 @@ else
     P1(2:end-1) = 2*P1(2:end-1);
 
     f = Fs*(0:(L/2))/L;
-    plot(handles.axes4,f,P1);    
+    %plot(handles.axes4,f,P1); 
+    
+    
+    [b,a]=ellip(5,0.1,40,[330 530]*2/Fs);
+    [H,w]=freqz(b,a,512*20);
+    %plot(handles.axes5,w*Fs/(2*pi),abs(H))
+    
+    sf1=filter(b,a,y);
+    yFF=[Fs/length(y):Fs/length(y):floor(Fs/2)];
+    yAF=abs(fft(sf1));
+    yAFF=yAF(1:length(yFF));
+    plot(handles.axes5,yFF,yAFF);
+    
+    xIndex = find(yAFF == max(yAFF), 1, 'first');
+    frequencia = f(xIndex);   
+        
+    freqStr = num2str(frequencia);
+    freqS = append(freqStr,' ',"Hz");
+    set(handles.text11, 'String', freqS);
+    
+    
+    if diff < 2
+        set(handles.text10,'String',"Afinada");
+        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+    else
+        set(handles.text10,'String',"Desafinada");
+        
+    end
+            
+    
 end
 
 
@@ -188,6 +286,11 @@ L = imread('nota e.jpg');
 
     sound(handles.mi,handles.miFs);
   else
+      
+    sfreq = num2str(handles.miFq)
+    myString = append(sfreq,' ',"Hz")
+    set(handles.text12, 'String', myString);
+    
     grabacion = audiorecorder; 
     Fs = grabacion.SampleRate;
     disp('Hablá pariente');
@@ -203,7 +306,35 @@ L = imread('nota e.jpg');
     P1(2:end-1) = 2*P1(2:end-1);
 
     f = Fs*(0:(L/2))/L;
-    plot(handles.axes4,f,P1);    
+    %plot(handles.axes4,f,P1);
+    
+    [b,a]=ellip(5,0.1,40,[2*550 2*750]*2/Fs);
+    [H,w]=freqz(b,a,512*20);
+   % plot(handles.axes5,w*Fs/(2*pi),abs(H))
+    
+    sf1=filter(b,a,y);
+    yFF=[Fs/length(y):Fs/length(y):floor(Fs/2)];
+    yAF=abs(fft(sf1));
+    yAFF=yAF(1:length(yFF));
+    plot(handles.axes5,yFF,yAFF);
+    
+    xIndex = find(yAFF == max(yAFF), 1, 'first');
+    frequencia = f(xIndex);
+    
+    freqStr = num2str(frequencia);
+    freqS = append(freqStr,' ',"Hz");
+    set(handles.text11, 'String', freqS);
+    
+    
+    if diff < 2
+        set(handles.text10,'String',"Afinada");
+        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+    else
+        set(handles.text10,'String',"Desafinada");
+        
+    end
+
+    
   end
 
 
