@@ -1,0 +1,66 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="304146128" file="/Users/Mariana/Desktop/UPB/Analisis/Proyecto Final/matAnalisis/GUI2.prj" location="/Users/Mariana/Desktop/UPB/Analisis/Proyecto Final/matAnalisis" name="GUI2" target="target.mlapps" target-name="Package App">
+    <param.appname>GUI2</param.appname>
+    <param.authnamewatermark />
+    <param.email />
+    <param.company />
+    <param.icon />
+    <param.icons />
+    <param.summary />
+    <param.description />
+    <param.screenshot />
+    <param.version>1.0</param.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.output>/Users/Mariana/Desktop</param.output>
+    <param.guid>fe333140-a3ce-48c9-9065-3a3a33707edc</param.guid>
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.icon />
+      <param.icons />
+      <param.summary />
+      <param.description />
+      <param.screenshot />
+      <param.version />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}/GUI2.m</file>
+    </fileset.main>
+    <fileset.depfun />
+    <fileset.resources>
+      <file>${PROJECT_ROOT}</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="/Users/Mariana" name="Desktop" optional="false">/Users/Mariana/Desktop</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/Applications/MATLAB_R2019a.app</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.14.5</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>maci64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

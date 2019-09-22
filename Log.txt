@@ -1,0 +1,10 @@
+Packaging the app...Failed to build Matlab apps file because app is self-contained.
+Error in com.mathworks.jmi.NativeMatlab>SendMatlabMessage at -2
+Error in com.mathworks.jmi.NativeMatlab>sendMatlabMessage at 259
+Error in com.mathworks.jmi.MatlabLooper>sendMatlabMessage at 120
+Error in com.mathworks.jmi.Matlab>mtFeval at 1739
+Error in com.mathworks.jmi.MatlabWorker>feval at 197
+Error in com.mathworks.toolbox.apps.plugin.PackageCommand$1>runOnMatlabThread at 156
+Error in com.mathworks.toolbox.apps.plugin.PackageCommand$1>runOnMatlabThread at 131
+Error in com.mathworks.jmi.MatlabWorker$2>run at 79
+Error in com.mathworks.jmi.NativeMatlab>dispatchMTRequests at 410

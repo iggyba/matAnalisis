@@ -1,30 +1,6 @@
 function varargout = GUI2(varargin)
 % GUI2 MATLAB code for GUI2.fig
-%      GUI2, by itself, creates a new GUI2 or raises the existing
-%      singleton*.
-%
-%      H = GUI2 returns the handle to a new GUI2 or the handle to
-%      the existing singleton*.
-%
-%      GUI2('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUI2.M with the given input arguments.
-%
-%      GUI2('Property','Value',...) creates a new GUI2 or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before GUI2_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to GUI2_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help GUI2
-
-% Last Modified by GUIDE v2.5 19-Sep-2019 15:40:46
-
-% Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
@@ -135,13 +111,16 @@ else
     freqS = append(freqStr,' ',"Hz");
     set(handles.text11, 'String', freqS);
     
-    diff = abs(frequencia - handles.reFq);
+    diffe = abs(frequencia - handles.reFq);
     
-    if diff < 2
+    if diffe < 2
         set(handles.text10,'String',"Afinada");
-        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+        set(handles.text10, 'ForegroundColor','green');
+        set(handles.text11, 'ForegroundColor','green');
     else
         set(handles.text10,'String',"Desafinada");
+        set(handles.text10, 'ForegroundColor','red');
+        set(handles.text11, 'ForegroundColor','red');
         
     end
 
@@ -196,16 +175,28 @@ function pushbutton3_Callback(hObject, eventdata, handles)
     xIndex = find(yAFF == max(yAFF), 1, 'first');
     frequencia = f(xIndex)
                 
+    if frequencia > 350
+        frequencia = frequencia/2
+    end 
+    
+    
     freqStr = num2str(frequencia);
     freqS = append(freqStr,' ',"Hz");
     set(handles.text11, 'String', freqS);
     
-    if diff < 2
+    diffe = abs(frequencia - handles.solFq);
+%BackgroundColor
+    
+    if diffe < 2
         set(handles.text10,'String',"Afinada");
-        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+        set(handles.text10, 'ForegroundColor','green');
+        set(handles.text11, 'ForegroundColor','green');
     else
         set(handles.text10,'String',"Desafinada");
+        set(handles.text10, 'ForegroundColor','red');
+        set(handles.text11, 'ForegroundColor','red');
         
+
     end
 end
 
@@ -260,12 +251,19 @@ K = imread('nota a.jpg');
     freqS = append(freqStr,' ',"Hz");
     set(handles.text11, 'String', freqS);
     
+    diffe2 = frequencia - handles.laFq;
     
-    if diff < 2
+    diffe = abs(frequencia - handles.laFq);
+
+    if diffe < 2
         set(handles.text10,'String',"Afinada");
-        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+        set(handles.text10, 'ForegroundColor','green');
+        set(handles.text11, 'ForegroundColor','green');
+        x = "llegue aqui"
     else
         set(handles.text10,'String',"Desafinada");
+        set(handles.text10, 'ForegroundColor','red');
+        set(handles.text11, 'ForegroundColor','red');
         
     end
             
@@ -308,7 +306,7 @@ L = imread('nota e.jpg');
     f = Fs*(0:(L/2))/L;
     %plot(handles.axes4,f,P1);
     
-    [b,a]=ellip(5,0.1,40,[2*550 2*750]*2/Fs);
+    [b,a]=ellip(5,0.1,40,[2*600 2*700]*2/Fs);
     [H,w]=freqz(b,a,512*20);
    % plot(handles.axes5,w*Fs/(2*pi),abs(H))
     
@@ -321,16 +319,26 @@ L = imread('nota e.jpg');
     xIndex = find(yAFF == max(yAFF), 1, 'first');
     frequencia = f(xIndex);
     
+    
+    diffe = abs(frequencia - handles.miFq);
+
+    
+    if frequencia >1000
+        frequencia= frequencia/2;
+    end
     freqStr = num2str(frequencia);
     freqS = append(freqStr,' ',"Hz");
     set(handles.text11, 'String', freqS);
     
     
-    if diff < 2
+    if diffe < 2
         set(handles.text10,'String',"Afinada");
-        set(handles.text10,'ForegroundColor',[0.635 0.078 0.184]);
+        set(handles.text10, 'ForegroundColor','green');
+        set(handles.text11, 'ForegroundColor','green');
     else
         set(handles.text10,'String',"Desafinada");
+        set(handles.text10, 'ForegroundColor','red');
+        set(handles.text11, 'ForegroundColor','red');
         
     end
 
